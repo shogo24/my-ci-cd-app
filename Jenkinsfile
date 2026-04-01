@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:20'   // Node 20 Docker image with npm pre-installed
+        }
+    }
 
     environment {
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
@@ -7,18 +11,6 @@ pipeline {
     }
 
     stages {
-        stage('Install Node') {
-            steps {
-                sh '''
-                apt-get update && apt-get install -y curl
-                curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-                apt-get install -y nodejs
-                node -v
-                npm -v
-                '''
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'npm install'
