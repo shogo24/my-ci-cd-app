@@ -1,9 +1,14 @@
 pipeline {
-    agent any
+    agent {
+        docker { 
+            image 'node:20' // Use Node.js 20 image
+            args '-u root:root' // optional, run as root to avoid permission issues
+        }
+    }
 
     environment {
-        NETLIFY_AUTH_TOKEN = credentials('netlify-token') // Use the token you’ll add in Jenkins
-        SITE_ID = 'c27607a5-a2f3-4842-b16c-30f8c4d3da02' // Your Netlify Site ID
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+        SITE_ID = 'c27607a5-a2f3-4842-b16f-30f8c4d3da02'
     }
 
     stages {
