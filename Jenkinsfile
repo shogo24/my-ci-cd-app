@@ -1,20 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:20-bullseye'
+            args '-u root:root' // run as root so npm/netlify installs work
+        }
+    }
     environment {
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
         SITE_ID = 'c27607a5-a2f3-4842-b16f-30f8c4d3da02'
     }
     stages {
-        stage('Install Node') {
-            steps {
-                sh '''
-                curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-                apt-get install -y nodejs
-                node -v
-                npm -v
-                '''
-            }
-        }
         stage('Build') {
             steps {
                 sh 'npm install'
